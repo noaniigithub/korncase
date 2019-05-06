@@ -1,6 +1,6 @@
 # KornCase v1.1
 
-The plugin to cases that are suitable for any project, you can customize the animation and localization
+The plugin to cases that are suitable for any project, you can customize the animation, Effects, Sounds and localization
 
 # DEPENDENCIES:
     HolographicDisplays
@@ -29,7 +29,7 @@ The plugin to cases that are suitable for any project, you can customize the ani
   
     /case edit <casename> item <name> - Hold the item in your hand as you type, 
 
-
+_____________________________________________________________
 
 # Bugs & Errors please report here
 VK: https://vk.com/korne3v
