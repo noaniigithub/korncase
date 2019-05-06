@@ -56,28 +56,33 @@ public class CommandManager implements CommandExecutor {
             if (args[0].equalsIgnoreCase("edit")) {
                 if (args.length == 2) {
                     String key = args[1];
-                    player.sendMessage("§6/case edit "+key+" changename <name> <newname>");
-                    player.sendMessage("§6/case edit "+key+" changereward <name> <command>");
-                    player.sendMessage("§6/case edit "+key+" changeitem <name>");
+                    player.sendMessage("§3/case edit "+key+" name <name> <newname>");
+                    player.sendMessage("§3/case edit "+key+" reward <name> <command>");
+                    player.sendMessage("§3/case edit "+key+" item <name>");
                     return true;
                 }
                 String key = args[1];
                 if(args.length == 4){
-                    if (args[2].equalsIgnoreCase("changeitem")) {
+                    if (args[2].equalsIgnoreCase("item")) {
                         CaseLoader.setItemStackInItemCase(key, args[3], player.getItemInHand());
-                        player.sendMessage("§6Changed the subject of " + args[3] + " in the case " + key);
+                        player.sendMessage("§3Changed the subject of " + args[3] + " in the case " + key);
                         return true;
                     }
                 }
                 if (args.length == 5) {
-                    if (args[2].equalsIgnoreCase("changename")) {
+                    if (args[2].equalsIgnoreCase("name")) {
                         CaseLoader.setNameItem(key, args[3], args[4]);
-                        player.sendMessage("§6Changed the subject of " + args[3] + " in the case " + key);
+                        player.sendMessage("§3Changed the subject of " + args[3] + " in the case " + key);
                         return true;
                     }
-                    if (args[2].equalsIgnoreCase("changereward")) {
+                    if (args[2].equalsIgnoreCase("reward")) {
                         CaseLoader.setRewardItem(key, args[3], args[4]);
-                        player.sendMessage("§6Changed the subject of " + args[3] + " in the case " + key);
+                        player.sendMessage("§3Changed the subject of " + args[3] + " in the case " + key);
+                        return true;
+                    }
+                    if (args[2].equalsIgnoreCase("chance")) {
+                        CaseLoader.setChanceItem(key, args[3], Double.parseDouble(args[4]));
+                        player.sendMessage("§3Changed the subject of " + args[3] + " in the case " + key);
                         return true;
                     }
                 }
@@ -87,17 +92,17 @@ public class CommandManager implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("create")) {
                     String key = args[1];
                     CaseLoader.create(key);
-                    player.sendMessage("§6Created a new case " + key);
+                    player.sendMessage("§3Created a new case " + key);
                 }
                 if (args[0].equalsIgnoreCase("additem")) {
                     String key = args[1];
                     CaseLoader.addItem(key, player.getItemInHand(),0.5);
-                    player.sendMessage("§6Item added to " + key);
+                    player.sendMessage("§3Item added to " + key);
                 }
                 if (args[0].equalsIgnoreCase("setblock")) {
                     String key = args[1];
                     CaseLoader.setLocation(key, player.getTargetBlock(null, 10).getLocation());
-                    player.sendMessage("§6Case " + key + " was set!");
+                    player.sendMessage("§3Case " + key + " was set!");
                 }
             }
             if (args.length == 3) {
@@ -111,13 +116,13 @@ public class CommandManager implements CommandExecutor {
                     int coint = Integer.parseInt(args[2]);
                     String playername = args[1];
                     getData.removeCases(Bukkit.getPlayer(playername).getUniqueId(), coint);
-                    player.sendMessage("§6You removed a player " + playername + " / " + coint + " cases");
+                    player.sendMessage("§3You removed a player " + playername + " / " + coint + " cases");
                 }
                 if (args[0].equalsIgnoreCase("setcase")) {
                     int coint = Integer.parseInt(args[2]);
                     String playername = args[1];
                     getData.setCases(Bukkit.getPlayer(playername).getUniqueId(), coint);
-                    player.sendMessage("§6You set a player " + playername + " / " + coint + " cases");
+                    player.sendMessage("§3You set a player " + playername + " / " + coint + " cases");
                 }
             }
         }catch (Exception e){

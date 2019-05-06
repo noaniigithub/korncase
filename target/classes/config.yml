@@ -31,9 +31,10 @@ plugin_message:
    - '&3/case setcase <player> <count> &8- &fSets player cases'
    - ''
    - '&3/case edit <casename> &8- &fItem Editor'
-   - '&3/case edit <casename> changename <name> <newname> &8- &fChanges subject name'
-   - '&3/case edit <casename> changereward <name> <command> &8- &fChanges the reward command'
-   - '&3/case edit <casename> changeitem <name> &8- &fHold the item in your hand as you type.'
+   - '&3/case edit <casename> name <name> <newname> &8- &fChanges subject name'
+   - '&3/case edit <casename> reward <name> <command> &8- &fChanges the reward command'
+   - '&3/case edit <casename> chance <name> <chance> &8- &fChanges the chance of a subject dropping.'
+   - '&3/case edit <casename> item <name> &8- &fHold the item in your hand as you type.'
    - ''
 language:
   selected: "ru"
