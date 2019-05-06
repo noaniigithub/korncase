@@ -3,12 +3,11 @@
 Plugin to cases that are suitable for any project and are good for mini-modes
 in the plugin, you can customize the animation and localization
 
-DEPENDENCIES:
-  HolographicDisplays,
-  PlaceholderAPI
+# DEPENDENCIES:
+    HolographicDisplays
+    PlaceholderAPI
 
-COMMANDS:
-
+# COMMANDS:
     /case create <casename> - Creates a new case, 
   
     /case additem <casename> - Adds a new item, 
@@ -30,6 +29,8 @@ COMMANDS:
     /case edit <casename> chance <name> <chance> - Changes the chance of a subject dropping, 
   
     /case edit <casename> item <name> - Hold the item in your hand as you type, 
+
+
 
 # Bugs & Errors please report here
 VK: https://vk.com/korne3v
