@@ -8,7 +8,7 @@ DEPENDENCIES:
   PlaceholderAPI
 
 COMMANDS:
- [case,kc,korncase]
+  [case,kc,korncase]
   /case create <casename> &8- &fCreates a new case
   /case additem <casename> &8- &fAdds a new item.
   /case setblock <casename> &8- &fSets the case on the block
