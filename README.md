@@ -21,7 +21,7 @@ COMMANDS:
   /case edit <casename> chance <name> <chance> &8- &fChanges the chance of a subject dropping.
   /case edit <casename> item <name> &8- &fHold the item in your hand as you type.
 
-# Bugs & Errors please report here:
+# Bugs & Errors please report here
 VK: https://vk.com/korne3v
 Spigot: https://www.spigotmc.org/members/korne3v.685012/
 
