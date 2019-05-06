@@ -1,0 +1,14 @@
+name: KornCase
+version: 1.0
+main: vk.com.korne3v.KornCase.Main
+author: korne3v
+load: POSTWORLD
+database: true
+depend: [HolographicDisplays,PlaceholderAPI]
+description: Плагин написал vk.com/korne3v
+api-version: 1.3
+website: vk.com/korne3v
+commands:
+  case:
+    aliases: [kcase,korncase,kc]
+    description: Plugin by korne3v
