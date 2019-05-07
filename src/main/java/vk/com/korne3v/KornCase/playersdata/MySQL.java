@@ -103,7 +103,7 @@ public class MySQL {
     public static void setStandardMySQL() {
         final FileConfiguration cfg = getMySQLFileConfiguration();
         cfg.options().copyDefaults(true);
-        cfg.addDefault("username", "erisaletcase");
+        cfg.addDefault("username", "korncase");
         cfg.addDefault("password", "password");
         cfg.addDefault("database", "database");
         cfg.addDefault("host", "localhost");

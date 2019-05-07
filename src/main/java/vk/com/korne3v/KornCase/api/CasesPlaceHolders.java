@@ -19,7 +19,7 @@ public class CasesPlaceHolders extends PlaceholderExpansion {
 
     @Override
     public String getIdentifier(){
-        return "erisaletcase";
+        return "korncase";
     }
 
     @Override
