@@ -13,12 +13,18 @@ The plugin to cases that are suitable for any project, you can customize the ani
   
     /case setblock <casename> - Sets the case on the block, 
   
-    /case givecase <player> <count> - Adds player cases, 
+    /case give <player> <count> - Adds player cases, 
   
-    /case removecase <player> <count> - Removes player cases, 
+    /case remove <player> <count> - Removes player cases, 
   
-    /case setcase <player> <count> - Sets player cases, 
+    /case set <player> <count> - Sets player cases, 
   
+    /case get <player> - Return player count cases, 
+  
+    /case list - List of available cases,
+    
+    /case reload - Reloads plugin and configuration,
+    
     /case edit <casename> - Item Editor, 
   
     /case edit <casename> name <name> <newname> - Changes subject name, 
