@@ -6,7 +6,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_12_R1.BlockPosition;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ public class Animation {
         Block block = CASE.getLocation().getBlock();
         CASE.setWork(true);
         items.addAll(CASE.getItemCases());
-        CASE.getHologram().getVisibilityManager().setVisibleByDefault(false);
+        CASE.holo_hide();
         playChestAnimation(block, 1);
         List<Hologram> holoiterator = new ArrayList<>();
         player.closeInventory();
@@ -63,22 +62,21 @@ public class Animation {
                         try {
                             CASE.getLocation().getWorld().playEffect(CASE.getLocation(),Utils.getParticleEffect("circledParticle"),1);
                             Thread.sleep(150);
-                            //playEffect(block.getLocation().clone().add(0.5, 1.3, 0.5), Effect.SMALL_SMOKE);
                             ItemCase itemCase = Utils.getRandom(items);
-                            Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
-                                Hologram holo = HologramsAPI.createHologram(Main.getInstance(), CASE.getLocation().clone().add(0.5, 2.0, 0.5));
-                                holo.appendTextLine(ChatColor.translateAlternateColorCodes('&',itemCase.getName()));
-                                holo.appendItemLine(itemCase.getItemStack());
-                                playSound(block, Utils.getSoundEffect("circledSound"), 20f);
-                                holoiterator.add(holo);
-                            });
-                            last[0] = itemCase;
+                                Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                                    Hologram holo = HologramsAPI.createHologram(Main.getInstance(), CASE.getLocation().clone().add(0.5, 2.0, 0.5));
+                                    holo.appendTextLine(ChatColor.translateAlternateColorCodes('&', itemCase.getName()));
+                                    holo.appendItemLine(itemCase.getItemStack());
+                                    playSound(block, Utils.getSoundEffect("circledSound"), 20f);
+                                    holoiterator.add(holo);
+                                });
                             Thread.sleep(750);
                             if (count[0] != 5) {
-                                holoiterator.get(count[0]).teleport(CASE.getLocation().clone().add(0.5, -0.3, 0.5));
-                                holoiterator.get(count[0]).delete();
-                                count[0]++;
-                                if(Utils.getSettings("break_effect"))
+                                    last[0] = itemCase;
+                                    holoiterator.get(count[0]).teleport(CASE.getLocation().clone().add(0.5, -0.3, 0.5));
+                                    holoiterator.get(count[0]).delete();
+                                    count[0]++;
+                                if (Utils.getSettings("break_effect"))
                                     playEffect(block.getLocation(), Effect.STEP_SOUND, Material.ENDER_CHEST);
                                 Thread.sleep(250);
                             }else{
@@ -89,11 +87,7 @@ public class Animation {
                                 if(Utils.getSettings("break_effect"))
                                     playEffect(block.getLocation(), Effect.STEP_SOUND, Material.ENDER_CHEST);
                                 if(Utils.getSettings("circle_effect")) {
-                                    if (block.isBlockFacePowered(BlockFace.NORTH) || block.isBlockFacePowered(BlockFace.SOUTH)) {
-                                        AnimaionCircle(holoiterator.get(count[0]), CASE, 0);
-                                    } else {
-                                        AnimaionCircle(holoiterator.get(count[0]), CASE, 1);
-                                    }
+                                    AnimaionCircle(holoiterator.get(count[0]), CASE, CASE.getFace());
                                     Thread.sleep(3000);
                                 }
                                 holoiterator.get(count[0]).teleport(CASE.getLocation().clone().add(0.5, -0.3, 0.5));
@@ -101,13 +95,15 @@ public class Animation {
                                 CASE.getLocation().getWorld().playEffect(CASE.getLocation(),Utils.getParticleEffect("preCloseParticle"),1);
                                 Thread.sleep(1500);
                                 playChestAnimation(block, 0);
-                                CASE.getHologram().getVisibilityManager().resetVisibilityAll();
-                                CASE.getHologram().getVisibilityManager().setVisibleByDefault(true);
                                 Thread.sleep(1000);
-                                CASE.setWork(false);
                                 player.playSound(player.getLocation(),Utils.getSoundEffect("preCloseSound"),1f,30f);
                                 Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,ChatColor.translateAlternateColorCodes('&',Utils.getText("broadcast").replace("%prefix%",Utils.getText("prefix")).replace("%reward%",last[0].getName()))));
-                                executeCommand(last[0].getReward(),player);
+                                Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                                    CASE.holo_show();
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), last[0].getReward().replace("%player%", player.getName()).replaceAll("/", ""));
+                                });
+                                Thread.sleep(250);
+                                CASE.setWork(false);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -131,10 +127,6 @@ public class Animation {
     public static void playChestAnimation(final Block chest, final int state) {
         final Location loc = chest.getLocation();
         ((CraftWorld)loc.getWorld()).getHandle().playBlockAction(new BlockPosition(chest.getX(), chest.getY(), chest.getZ()), CraftMagicNumbers.getBlock(chest), 1, state);
-    }
-
-    public static void executeCommand(String command,Player player){
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%",player.getName()));
     }
 
     public static void AnimaionCircle(Hologram holo,Case CASE,int face) {

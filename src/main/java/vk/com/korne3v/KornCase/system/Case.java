@@ -18,15 +18,18 @@ public class Case {
     private List<ItemCase> itemCases;
     private Hologram hologram;
     private boolean work;
+    private int face;
 
-    public Case(Location location,List<ItemCase> itemCases) {
+    public Case(int face,Location location,List<ItemCase> itemCases) {
         this.main = Main.getInstance();
         this.work = false;
         this.location = location;
         this.itemCases = itemCases;
+        this.face = face;
+        createHologram();
     }
 
-    public void createHologram(){
+    private void createHologram(){
         this.hologram = HologramsAPI.createHologram(main, location.clone().add(0.5, 2.0, 0.5));
         for(String str : main.getConfig().getStringList("language."+ Utils.getLang()+".case_hologram")) {
             if(str.startsWith("item:")) {
@@ -35,6 +38,28 @@ public class Case {
                 this.hologram.appendTextLine(ChatColor.translateAlternateColorCodes('&',str));
             }
         }
+    }
+
+    public void deleteHologram(){
+        this.hologram.delete();
+    }
+
+    public void holo_hide(){
+        deleteHologram();
+    }
+
+    public void holo_show(){
+        createHologram();
+    }
+
+
+
+    public int getFace() {
+        return face;
+    }
+
+    public void setFace(int face) {
+        this.face = face;
     }
 
     public List<ItemCase> getItemCases() {

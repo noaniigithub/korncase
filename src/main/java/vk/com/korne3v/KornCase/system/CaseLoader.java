@@ -33,26 +33,49 @@ public class CaseLoader {
         load();
     }
 
-    private void load(){
-        for(String key : config.getKeys(false)) {
-            ConfigurationSection section = config.getConfigurationSection(key);
-            Location location = getLocation(key);
-
-            if (location.getWorld() == null) {
-                if (Main.getInstance().getConfig().getBoolean("CreateWorld"))
-                    WorldCreator.name(location.getWorld().getName()).createWorld();
-            }
-
-            List<ItemCase> ic = new ArrayList<>();
-            for (String itemkey : section.getConfigurationSection("ITEMS").getKeys(false)) {
-                ic.add(new ItemCase(section.getItemStack("ITEMS." + itemkey + ".ITEM"), section.getString("ITEMS." + itemkey + ".NAME"), section.getString("ITEMS." + itemkey + ".REWARD"), section.getDouble("ITEMS." + itemkey + ".CHANCE")));
-            }
-            if (location.getWorld() != null && location.getBlock().getType() == Material.ENDER_CHEST) {
-                Case CASE = new Case(location, ic);
-                CASE.createHologram();
-                getMapCases.put(location.getBlock(), CASE);
+    public static void configLoad(){
+        if (!file.exists()) {
+            if (Main.getInstance().getResource("case.yml") != null) {
+                Main.getInstance().saveResource("case.yml", false);
             }
         }
+        config = YamlConfiguration.loadConfiguration(file);
+    }
+
+    public static void load(){
+        if(config.getKeys(false) != null) {
+            for (String key : config.getKeys(false)) {
+                try {
+                    ConfigurationSection section = config.getConfigurationSection(key);
+                    Location location = getLocation(key);
+
+                    if (location.getWorld() == null) {
+                        if (Main.getInstance().getConfig().getBoolean("CreateWorld"))
+                            WorldCreator.name(location.getWorld().getName()).createWorld();
+                    }
+
+                    List<ItemCase> ic = new ArrayList<>();
+                    for (String itemkey : section.getConfigurationSection("ITEMS").getKeys(false)) {
+                        ic.add(new ItemCase(section.getItemStack("ITEMS." + itemkey + ".ITEM"), section.getString("ITEMS." + itemkey + ".NAME"), section.getString("ITEMS." + itemkey + ".REWARD"), section.getDouble("ITEMS." + itemkey + ".CHANCE")));
+                    }
+                    if (location.getWorld() != null && location.getBlock().getType() == Material.ENDER_CHEST) {
+                        Case CASE = new Case(section.getInt("FACE"), location, ic);
+                        getMapCases.put(location.getBlock(), CASE);
+                    }
+                } catch(NullPointerException e){
+                    Bukkit.getConsoleSender().sendMessage("§cCase "+key+" no loaded..");
+                    Bukkit.getConsoleSender().sendMessage("§8- §cСheck all you specified in the config for the chest!");
+                    return;
+                }
+            }
+        }
+    }
+
+    public static void removeCase(String key){
+        config.set(key,null);
+        save();
+        Main.ReLoad();
+        save();
     }
 
     public static void removeItem(ItemCase itemCase){
@@ -67,10 +90,11 @@ public class CaseLoader {
 
     public static void create(String key){
         ConfigurationSection section = config.createSection(key);
-        section.set("LOCATION.WORLD",Bukkit.getWorlds().get(0));
+        section.set("LOCATION.WORLD",Bukkit.getWorlds().get(0).getName());
         section.set("LOCATION.X",0);
         section.set("LOCATION.Y",0);
         section.set("LOCATION.Z",0);
+        section.set("FACE",0);
         save();
         addItem(key,new ItemStack(Material.STONE),95);
         addItem(key,new ItemStack(Material.DIAMOND),5);
@@ -80,7 +104,7 @@ public class CaseLoader {
         ConfigurationSection section = config.getConfigurationSection(key);
         String itemkey = itemStack.getType().toString();
         section.set("ITEMS." + itemkey + ".NAME", itemStack.getType().name());
-        section.set("ITEMS." + itemkey + ".REWARD", "give %player% " + itemStack.getType().name() + " " + itemStack.getAmount() + " " + itemStack.getData());
+        section.set("ITEMS." + itemkey + ".REWARD", "give %player% " + itemStack.getType().name() + " " + itemStack.getAmount() + " " + itemStack.getDurability());
         section.set("ITEMS." + itemkey + ".ITEM", itemStack);
         section.set("ITEMS." + itemkey + ".CHANCE", chance);
         save();
@@ -126,6 +150,15 @@ public class CaseLoader {
         section.set("LOCATION.Y",location.getY());
         section.set("LOCATION.Z",location.getZ());
         save();
+    }
+
+    public static void clear(){
+        for(Block block : getMapCases.keySet()) {
+            Case CASE  = getMapCases.get(block);
+            CASE.deleteHologram();
+            getMapCases.remove(block);
+        }
+        getMapCases.clear();
     }
 
     public static void save(){

@@ -26,21 +26,24 @@ plugin_message:
    - '&3/case create <casename> &8- &fCreates a new case'
    - '&3/case additem <casename> &8- &fAdds a new item.'
    - '&3/case setblock <casename> &8- &fSets the case on the block'
-   - '&3/case givecase <player> <count> &8- &fAdds player cases'
-   - '&3/case removecase <player> <count> &8- &fRemoves player cases'
-   - '&3/case setcase <player> <count> &8- &fSets player cases'
-   - ''
+   - '&3/case give <player> <count> &8- &fAdds player cases'
+   - '&3/case remove <player> <count> &8- &fRemoves player cases'
+   - '&3/case set <player> <count> &8- &fSets player cases'
+   - '&3/case get &7&o<player> &8- &fReturn player count cases'
+   - '&3/case list &8- &fList of available cases'
+   - '&3/case reload &8- &fReloads plugin and configuration'
    - '&3/case edit <casename> &8- &fItem Editor'
    - '&3/case edit <casename> name <name> <newname> &8- &fChanges subject name'
    - '&3/case edit <casename> reward <name> <command> &8- &fChanges the reward command'
    - '&3/case edit <casename> chance <name> <chance> &8- &fChanges the chance of a subject dropping.'
    - '&3/case edit <casename> item <name> &8- &fHold the item in your hand as you type.'
    - ''
+   - '&6Developer: &evk.com/korne3v'
 language:
-  selected: "ru"
+  selected: "en"
   ru:
     prefix: '&5Таинственный сундук &8| &f'
-    broadcast: '%prefix%Игрок &7%player_name%&f выбил из кейса&7 %reward%'
+    broadcast: '%prefix% &7%player_name%&f выбил из кейса&7 %reward%'
     open_case: '&aОткрываем сундук..'
     wait_open: '&cПожалуйста подождите..'
     case_not_found: '&cУ вас нет кейсов!'
@@ -53,7 +56,7 @@ language:
      - '&7нажмите, чтобы открыть'
   ua:
     prefix: '&5Таємничий скриню &8| &f'
-    broadcast: '%prefix%Гравець &7%player_name%&f отримав з кейса&7 %reward%'
+    broadcast: '%prefix% &7%player_name%&f отримав з кейса&7 %reward%'
     open_case: '&aВідкриваємо скриню ..'
     wait_open: '&cБудь ласка зачекайте..'
     case_not_found: '&cУ вас немає кейсів!'
@@ -66,7 +69,7 @@ language:
      - '&7натисніть, щоб відкрити'
   en:
     prefix: '&5Mysterious Chest &8| &f'
-    broadcast: '%prefix%Player &7%player_name%&f received from the case of&7 %reward%'
+    broadcast: '%prefix% &7%player_name%&f received from the case of&7 %reward%'
     open_case: '&aOpen the chest...'
     wait_open: '&cPlease wait..'
     case_not_found: '&cYou have no cases!'
@@ -79,7 +82,7 @@ language:
      - '&7click to open'
   de:
     prefix: '&5Geheimnisvolle Truhe &8| &f'
-    broadcast: '%prefix%Der Spieler &7%player_name%&f erhielt vom fall&7 %reward%'
+    broadcast: '%prefix% &7%player_name%&f erhielt vom fall&7 %reward%'
     open_case: '&aÖffne die Truhe ..'
     wait_open: '&cBitte warten Sie..'
     case_not_found: '&cSie haben keine Fälle!'

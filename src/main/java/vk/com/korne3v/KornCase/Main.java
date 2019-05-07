@@ -76,8 +76,10 @@ public final class Main extends JavaPlugin {
 
     public static void ReLoad(){
         Bukkit.getConsoleSender().sendMessage("§a["+instance.getDescription().getName()+"] START PLUGIN RELOADING..");
+        CaseLoader.configLoad();
         instance.saveDefaultConfig();
         CaseLoader.save();
+        CaseLoader.clear();
         Bukkit.getPluginManager().disablePlugin(instance);
         Bukkit.getPluginManager().enablePlugin(instance);
     }
