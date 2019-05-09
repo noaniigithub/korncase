@@ -2,6 +2,7 @@ package vk.com.korne3v.KornCase.api;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+import vk.com.korne3v.KornCase.Main;
 import vk.com.korne3v.KornCase.system.CaseLoader;
 import vk.com.korne3v.KornCase.playersdata.getData;
 
@@ -24,12 +25,12 @@ public class CasesPlaceHolders extends PlaceholderExpansion {
 
     @Override
     public String getRequiredPlugin(){
-        return "KornCase";
+        return Main.getInstance().getDescription().getName();
     }
 
     @Override
     public String getVersion(){
-        return "1.0";
+        return Main.getInstance().getDescription().getVersion();
     }
 
     @Override

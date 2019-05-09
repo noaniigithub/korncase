@@ -7,7 +7,7 @@ public class getDataBase {
 
     public static boolean playerExists(final String uuid) {
         try {
-            final ResultSet rs = MySQL.getResult("SELECT * FROM CASES WHERE UUID='" + uuid + "'");
+            final ResultSet rs = DataBase.get("SELECT * FROM CASES WHERE UUID='" + uuid + "'");
             return rs.next() && rs.getString("UUID") != null;
         }
         catch (SQLException e) {
@@ -18,7 +18,7 @@ public class getDataBase {
 
     public static void createPlayer(final String uuid) {
         if (!playerExists(uuid)) {
-            MySQL.update("INSERT INTO CASES (UUID, COUNT) VALUES ('" + uuid + "', '0');");
+            DataBase.update("INSERT INTO CASES (UUID, COUNT) VALUES ('" + uuid + "', '0');");
         }
     }
 
@@ -26,7 +26,7 @@ public class getDataBase {
         Integer i = 0;
         if (playerExists(uuid)) {
             try {
-                final ResultSet rs = MySQL.getResult("SELECT * FROM CASES WHERE UUID='" + uuid + "'");
+                final ResultSet rs = DataBase.get("SELECT * FROM CASES WHERE UUID='" + uuid + "'");
                 if (rs.next()) {
                     rs.getInt("COUNT");
                 }
@@ -41,7 +41,7 @@ public class getDataBase {
 
     public static void setCases(final String uuid, final Integer coins) {
         if (playerExists(uuid)) {
-            MySQL.update("UPDATE CASES SET COUNT='" + coins + "' WHERE UUID='" + uuid + "'");
+            DataBase.update("UPDATE CASES SET COUNT='" + coins + "' WHERE UUID='" + uuid + "'");
         }
     }
 

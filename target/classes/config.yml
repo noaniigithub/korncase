@@ -1,20 +1,28 @@
-BaseDataEnabled: false
+Database:
+  Enabled: false
+  Url: 'jdbc:mysql://localhost:3306/localdbase?user=korncase&password=pass012345'
 PlaceholdersEnabled: true
 CreateWorld: false
 Settings:
+  Stand:
+    Texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjM0NjMwOWRiYjRhYWI2ZjlkMTRhNjI3ZmI3M2Y0ODE0MTY1ODM3YjQyMzg1ZjA2NDMyZDY4MDIzYTg0NDVkIn19fQ=='
   effect_speed: true
   level_change: true
   break_effect: true
   circle_effect: true
   Effects:
     circledParticle: 'MOBSPAWNER_FLAMES'
-    circledItemParticle: 'HAPPY_VILLAGER'
+    playerParticle: 'SMOKE'
     finalParticle: 'MOBSPAWNER_FLAMES'
     preCloseParticle: 'MOBSPAWNER_FLAMES'
   Sounds:
     circledSound: 'UI_BUTTON_CLICK'
     finalSound: 'ENTITY_WITHER_DEATH'
     preCloseSound: 'ENTITY_ARROW_HIT_PLAYER'
+    noFoundCase: 'ENTITY_VILLAGER_NO'
+    caseOpen: 'ENTITY_PLAYER_LEVELUP'
+    guiClickUP: 'ENTITY_ARROW_HIT_PLAYER'
+    guiClickDown: 'ENTITY_ITEM_BREAK'
 Permissions:
   open_inventory_case: 'korncase.open.inventory'
   view_rewardcmd_inventory_case: 'korncase.view.rewardcmd'
@@ -40,7 +48,7 @@ plugin_message:
    - ''
    - '&6Developer: &evk.com/korne3v'
 language:
-  selected: "en"
+  selected: "ru"
   ru:
     prefix: '&5Таинственный сундук &8| &f'
     broadcast: '%prefix% &7%player_name%&f выбил из кейса&7 %reward%'

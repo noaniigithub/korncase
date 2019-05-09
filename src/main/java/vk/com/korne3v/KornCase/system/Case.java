@@ -5,6 +5,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import vk.com.korne3v.KornCase.Main;
 import vk.com.korne3v.KornCase.Utils;
@@ -38,6 +39,10 @@ public class Case {
                 this.hologram.appendTextLine(ChatColor.translateAlternateColorCodes('&',str));
             }
         }
+    }
+
+    public World getWorld(){
+        return location.getWorld();
     }
 
     public void deleteHologram(){

@@ -1,10 +1,11 @@
 name: KornCase
-version: 1.1
+version: 1.2
 main: vk.com.korne3v.KornCase.Main
 author: korne3v
 load: POSTWORLD
 database: true
-depend: [HolographicDisplays,PlaceholderAPI]
+softdepend: [PlaceholderAPI]
+depend: [HolographicDisplays]
 description: Плагин написал vk.com/korne3v
 api-version: 1.3
 website: vk.com/korne3v

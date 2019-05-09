@@ -1,14 +1,17 @@
 package vk.com.korne3v.KornCase;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 import vk.com.korne3v.KornCase.api.CasesPlaceHolders;
 import vk.com.korne3v.KornCase.events.EventManager;
-import vk.com.korne3v.KornCase.playersdata.MySQL;
+import vk.com.korne3v.KornCase.netminecraftserver.NMS;
+import vk.com.korne3v.KornCase.playersdata.DataBase;
 import vk.com.korne3v.KornCase.playersdata.getData;
 import vk.com.korne3v.KornCase.system.Case;
 import vk.com.korne3v.KornCase.system.CaseLoader;
 
+import java.io.File;
 import java.io.IOException;
 
 public final class Main extends JavaPlugin {
@@ -19,16 +22,29 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        Bukkit.getConsoleSender().sendMessage("§a["+this.getDescription().getName()+"] Selected language = "+Utils.getLang());
+        Bukkit.getConsoleSender().sendMessage("§3---------------------------§r");
+        Bukkit.getConsoleSender().sendMessage("                             ");
+        Bukkit.getConsoleSender().sendMessage("§b          KornCase        §r");
+        Bukkit.getConsoleSender().sendMessage("§7      plugin by korne3v    ");
+        Bukkit.getConsoleSender().sendMessage("                             ");
+        Bukkit.getConsoleSender().sendMessage("§8 ------------------------- §r");
+        Bukkit.getConsoleSender().sendMessage("                             ");
+        Bukkit.getConsoleSender().sendMessage("§f  Version: §a" + Main.getInstance().getDescription().getVersion());
+        Bukkit.getConsoleSender().sendMessage("§f  Core: §6" + Bukkit.getName() + " " +Bukkit.getBukkitVersion());
+        NMS.configSoundAndEffectsFix();
+
+        this.saveDefaultConfig();
+
+        Bukkit.getConsoleSender().sendMessage("§f  Selected language: §a"+Utils.getLang());
 
         if(Bukkit.getPluginManager().getPlugin("HolographicDisplays") != null) {
             if(!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
                 Bukkit.getPluginManager().enablePlugin(Bukkit.getPluginManager().getPlugin("HolographicDisplays"));
-                Bukkit.getConsoleSender().sendMessage("§a[" + this.getDescription().getName() + "] HolographicDisplays loaded!");
+                Bukkit.getConsoleSender().sendMessage("§a  + §fHolographicDisplays loaded!");
             }
         }else {
-            Bukkit.getConsoleSender().sendMessage("§c[" + this.getDescription().getName() + "] plugin §lHolographicDisplays§c not found..");
-            Bukkit.getConsoleSender().sendMessage("§c[" + this.getDescription().getName() + "] please download: §ehttps://dev.bukkit.org/projects/holographic-displays");
+            Bukkit.getConsoleSender().sendMessage("§c  plugin HolographicDisplays not found..");
+            Bukkit.getConsoleSender().sendMessage("§c  please download: §7https://dev.bukkit.org/projects/holographic-displays");
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
@@ -36,46 +52,35 @@ public final class Main extends JavaPlugin {
             if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
                 if(!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
                     Bukkit.getPluginManager().enablePlugin(Bukkit.getPluginManager().getPlugin("PlaceholderAPI"));
-                    Bukkit.getConsoleSender().sendMessage("§a[" + this.getDescription().getName() + "] PlaceholderAPI loaded!");
+                    new CasesPlaceHolders().register();
+                    Bukkit.getConsoleSender().sendMessage("§a  + §fPlaceholderAPI loaded!");
                 }
-                new CasesPlaceHolders().register();
             }else{
-                Bukkit.getConsoleSender().sendMessage("§c["+this.getDescription().getName()+"] plugin §lPlaceholderAPI§c not found..");
-                Bukkit.getConsoleSender().sendMessage("§c["+this.getDescription().getName()+"] please download: §ehttps://www.spigotmc.org/resources/placeholderapi.6245/");
-                Bukkit.getPluginManager().disablePlugin(this);
+                Bukkit.getConsoleSender().sendMessage("§c  plugin PlaceholderAPI not found..");
+                Bukkit.getConsoleSender().sendMessage("§c  please download: §7https://www.spigotmc.org/resources/placeholderapi.6245/");
             }
 
         this.getCommand("case").setExecutor(new CommandManager());
 
-        this.saveDefaultConfig();
-
         new CaseLoader();
         getData.fileLoad();
 
-        if(getConfig().getBoolean("BaseDataEnabled"))
-            ConnectMySQL();
+        if(getConfig().getBoolean("Database.Enabled"))
+            Bukkit.getScheduler().runTaskLaterAsynchronously(this, Main::Connect, 5);
 
         Bukkit.getPluginManager().registerEvents(new EventManager(),this);
+        Bukkit.getConsoleSender().sendMessage("§f                            ");
+        Bukkit.getConsoleSender().sendMessage("§8 ------------------------- §r");
+        Bukkit.getConsoleSender().sendMessage("§7      vk.com/korne3v     ");
+        Bukkit.getConsoleSender().sendMessage("§3---------------------------§r");
     }
 
-    public void ConnectMySQL() {
-        MySQL.setStandardMySQL();
-        MySQL.readMySQL();
-        MySQL.connect();
-        MySQL.createTable();
+    public static void Connect() {
+        DataBase.connect();
     }
 
-    public void DisconnectMySQL(){
-        try {
-            MySQL.getMySQLFileConfiguration().save(MySQL.getMySQLFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        MySQL.close();
-    }
-
-    public static void ReLoad(){
-        Bukkit.getConsoleSender().sendMessage("§a["+instance.getDescription().getName()+"] START PLUGIN RELOADING..");
+    public static void ReLoad() {
+        Bukkit.getConsoleSender().sendMessage("§b["+instance.getDescription().getName()+"] Starts plugin reload..");
         CaseLoader.configLoad();
         instance.saveDefaultConfig();
         CaseLoader.save();
@@ -86,8 +91,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if(getConfig().getBoolean("BaseDataEnabled"))
-            DisconnectMySQL();
         for(Case CASE : CaseLoader.getMapCases.values())
             if(CASE.getHologram() != null)
                 CASE.getHologram().delete();

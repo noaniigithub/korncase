@@ -3,7 +3,6 @@ package vk.com.korne3v.KornCase.events;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +28,7 @@ import java.util.*;
 
 public class EventManager implements Listener {
 
-    private HashMap<HumanEntity, ItemCase> icMap = new HashMap<>();
+    //private HashMap<HumanEntity, ItemCase> icMap = new HashMap<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -41,8 +40,6 @@ public class EventManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCaseGuiClick(InventoryClickEvent event) {
         if(event.getCurrentItem() == null) return;
-        if(event.getClickedInventory() == null) return;
-        if(event.getClick() == null) return;
 
         if(event.getWhoClicked().getOpenInventory().getTopInventory().getTitle().contains(Utils.getText("case_title_name"))){
             if(event.getWhoClicked().getOpenInventory().getTopInventory().getHolder() == null){
@@ -50,9 +47,9 @@ public class EventManager implements Listener {
 
                 Player player = (Player) event.getWhoClicked();
                 if(event.getSlot() >= 9){
-                    player.playSound(player.getLocation(),Sound.ENTITY_ITEM_BREAK,1f,30f);
+                    player.playSound(player.getLocation(),Utils.getSoundEffect("guiClickDown"),1f,30f);
                 }else{
-                    player.playSound(player.getLocation(),Sound.ENTITY_ARROW_HIT_PLAYER,1f,30f);
+                    player.playSound(player.getLocation(),Utils.getSoundEffect("guiClickUP"),1f,30f);
                 }
             }
         }
@@ -70,7 +67,7 @@ public class EventManager implements Listener {
                         if (!CASE.isWork()) {
                             List<ItemCase> items = new ArrayList<>();
                             event.getPlayer().sendMessage(Utils.getText("open_case"));
-                            event.getPlayer().getWorld().playSound(event.getClickedBlock().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 10f);
+                            event.getPlayer().getWorld().playSound(event.getClickedBlock().getLocation(), Utils.getSoundEffect("caseOpen"), 1f, 10f);
                             for (int i = 0; i < 10; i++)
                                 items.add(CASE.getItemCases().get(new Random().nextInt(CASE.getItemCases().size())));
                             Animation.play(event.getPlayer(), CaseLoader.getMapCases.get(event.getClickedBlock()), new ArrayList<>());
@@ -78,11 +75,11 @@ public class EventManager implements Listener {
                         } else {
                             event.getPlayer().sendMessage(Utils.getText("wait_open"));
                             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,1,1),true);
-                            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_VILLAGER_NO,1f,55f);
+                            event.getPlayer().playSound(event.getPlayer().getLocation(),Utils.getSoundEffect("noFoundCase"),1f,55f);
                         }
                     } else {
                         event.getPlayer().sendMessage(Utils.getText("case_not_found"));
-                        event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_VILLAGER_NO,1f,55f);
+                        event.getPlayer().playSound(event.getPlayer().getLocation(),Utils.getSoundEffect("noFoundCase"),1f,55f);
                     }
                 }else{
                     if(event.getPlayer().hasPermission(Utils.getPermission("open_inventory_case"))){

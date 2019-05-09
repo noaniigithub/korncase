@@ -63,7 +63,7 @@ public class CaseLoader {
                         getMapCases.put(location.getBlock(), CASE);
                     }
                 } catch(NullPointerException e){
-                    Bukkit.getConsoleSender().sendMessage("§cCase "+key+" no loaded..");
+                    Bukkit.getConsoleSender().sendMessage("§c  Case "+key+" no loaded..");
                     Bukkit.getConsoleSender().sendMessage("§8- §cСheck all you specified in the config for the chest!");
                     return;
                 }

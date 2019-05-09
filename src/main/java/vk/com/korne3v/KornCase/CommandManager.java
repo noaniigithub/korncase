@@ -143,7 +143,7 @@ public class CommandManager implements CommandExecutor {
                     int coint = Integer.parseInt(args[2]);
                     String playername = args[1];
                     getData.addCases(Bukkit.getPlayer(playername).getUniqueId(), coint);
-                    player.sendMessage("§6You added a player " + playername + " / " + coint + " cases");
+                    player.sendMessage("§3You added a player " + playername + " / " + coint + " cases");
                 }
                 if (args[0].equalsIgnoreCase("remove")) {
                     int coint = Integer.parseInt(args[2]);

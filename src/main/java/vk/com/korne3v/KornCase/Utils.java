@@ -1,7 +1,10 @@
 package vk.com.korne3v.KornCase;
 
 import org.bukkit.*;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import vk.com.korne3v.KornCase.system.Case;
 import vk.com.korne3v.KornCase.system.ItemCase;
@@ -47,25 +50,32 @@ public class Utils {
         return ChatColor.translateAlternateColorCodes('&',Main.getInstance().getConfig().getString("language."+getLang()+"."+key));
     }
 
-    public static void checkNearbyPlayers(final Player player, Case CASE) {
-        new Thread(() -> {
-            while (CASE.isWork()) {
-                try {
-                    Thread.sleep(10L);
-                }
-                catch (InterruptedException ex) {}
-                for (Iterator<Player> it = getNearbyPlayers(CASE.getLocation(), 4).iterator(); it.hasNext(); ) {
-                    Player p = it.next();
-                    if(player != p && p.hasPermission(getPermission("knockback_bypass"))){
-                        Vector from = new Vector(CASE.getLocation().getX(), CASE.getLocation().getY(), CASE.getLocation().getZ());
-                        Vector to = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
-                        Vector vector = to.subtract(from);
-                        vector.setX(vector.getX() * 0.2);
-                        vector.setY(0.2);
-                        vector.setZ(vector.getZ() * 0.2);
-                        p.setVelocity(vector);
+    public static void checkNearbyPlayers(Player player, Case CASE) {
+        new Thread(new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (CASE.isWork()) {
+                    try {
+                        Thread.sleep(5);
+                        for (Iterator<Player> it = getNearbyPlayers(CASE.getLocation(), 4).iterator(); it.hasNext(); ) {
+                            Player p = it.next();
+                            if (player != p && p.hasPermission(getPermission("knockback_bypass"))) {
+                                Vector from = new Vector(CASE.getLocation().getX(), CASE.getLocation().getY(), CASE.getLocation().getZ());
+                                Vector to = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
+                                Vector vector = to.subtract(from);
+                                vector.setX(vector.getX() * 0.2);
+                                vector.setY(0.6);
+                                vector.setZ(vector.getZ() * 0.2);
+                                p.setVelocity(vector);
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                }else{
+                    this.cancel();
                 }
+
             }
         }).start();
     }
@@ -80,10 +90,10 @@ public class Utils {
         return pl;
     }
 
-    public static List<Location> getCircleUp(int face,final Location center, final double radius, final int amount) {
-        final World world = center.getWorld();
-        final double increment = 6.283185307179586 / amount;
-        final List<Location> locations = new ArrayList<>();
+    public static List<Location> getCircleUp(int face,Location center,double radius,int amount) {
+        World world = center.getWorld();
+        double increment = 6.283185307179586 / amount;
+        List<Location> locations = new ArrayList<>();
         if(face == 0) {
             for (int i = 0; i < amount; ++i) {
                 final double angle = i * increment;
@@ -100,5 +110,20 @@ public class Utils {
             }
         }
         return locations;
+    }
+
+    public static void spawnFireWork(Location location){
+        Firework fireWork = location.getWorld().spawn(location, Firework.class);
+        FireworkMeta fireworkMeta = fireWork.getFireworkMeta();
+        fireworkMeta.setPower(0);
+        fireworkMeta.addEffect(FireworkEffect.builder()
+                .with(FireworkEffect.Type.BALL)
+                .withColor(Color.GREEN)
+                .withFade(Color.PURPLE)
+                .flicker(false)
+                .trail(false)
+                .build()
+        );
+        fireWork.setFireworkMeta(fireworkMeta);
     }
 }

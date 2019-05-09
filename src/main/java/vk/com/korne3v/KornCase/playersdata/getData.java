@@ -35,7 +35,7 @@ public class getData {
     }
 
     public static boolean check(UUID uuid){
-        if(config.getBoolean("BaseDataEnabled")){
+        if(config.getBoolean("Database.Enabled")){
             if(getDataBase.playerExists(uuid.toString())) {
                 return true;
             }
@@ -48,7 +48,7 @@ public class getData {
     }
 
     public static void create(UUID uuid){
-        if(config.getBoolean("BaseDataEnabled")){
+        if(config.getBoolean("Database.Enabled")){
             if(!getDataBase.playerExists(uuid.toString())) {
                 getDataBase.createPlayer(uuid.toString());
             }
@@ -62,14 +62,14 @@ public class getData {
     }
 
     public static Integer getCases(UUID uuid){
-        if(config.getBoolean("BaseDataEnabled"))
+        if(config.getBoolean("Database.Enabled"))
             return getDataBase.getCases(uuid.toString());
         else
             return config.getInt("players."+ Bukkit.getPlayer(uuid).getName());
     }
 
     public static void addCases(UUID uuid,int count){
-        if(config.getBoolean("BaseDataEnabled"))
+        if(config.getBoolean("Database.Enabled"))
             getDataBase.addCases(uuid.toString(),count);
         else
             config.set("players."+ Bukkit.getPlayer(uuid).getName(),getCases(uuid)+count);
@@ -77,7 +77,7 @@ public class getData {
     }
 
     public static void removeCases(UUID uuid,int count){
-        if(config.getBoolean("BaseDataEnabled"))
+        if(config.getBoolean("Database.Enabled"))
             getDataBase.removeCases(uuid.toString(),count);
         else
             config.set("players."+ Bukkit.getPlayer(uuid).getName(),getCases(uuid)-count);
@@ -85,7 +85,7 @@ public class getData {
     }
 
     public static void setCases(UUID uuid,int count){
-        if(config.getBoolean("BaseDataEnabled"))
+        if(config.getBoolean("Database.Enabled"))
             getDataBase.setCases(uuid.toString(),count);
         else
             config.set("players."+ Bukkit.getPlayer(uuid).getName(),count);
