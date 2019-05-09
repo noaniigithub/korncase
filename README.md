@@ -1,4 +1,4 @@
-# KornCase v1.1
+# KornCase v1.2
 
 The plugin to cases that are suitable for any project, you can customize the animation, Effects, Sounds and localization
 
@@ -8,6 +8,8 @@ The plugin to cases that are suitable for any project, you can customize the ani
 
 # COMMANDS:
     /case create <casename> - Creates a new case, 
+    
+    /case delete <casename> - Delete case, 
   
     /case additem <casename> - Adds a new item, 
   
